@@ -1,0 +1,49 @@
+com.example.project: 顶级包，根据实际项目来命名。
+
+com.example.project.module: 模块包，按照模块划分，可以根据业务功能进行命名，如user、order等。
+
+	api: 存放接口类，如UserService、OrderService等。
+	dto: 存放数据传输对象，用于接口参数的封装。
+	entity: 存放实体类，对应数据库的表结构。
+	repository: 存放数据访问层接口，如UserRepository、OrderRepository等。
+	service: 存放服务层接口和实现类，如UserService、OrderService等。
+	controller: 存放控制器类，处理HTTP请求，负责接收和响应请求。
+
+com.example.project.config: 存放配置相关的类。
+
+	DatabaseConfig: 数据库配置类。
+	CacheConfig: 缓存配置类。
+	SecurityConfig: 安全配置类。
+
+com.example.project.exception: 存放自定义异常类。
+
+	BusinessException: 业务异常类。
+	GlobalExceptionHandler: 全局异常处理器。
+
+com.example.project.util: 存放通用工具类。
+
+	StringUtils: 字符串处理工具类。
+	DateUtils: 日期处理工具类。
+	EncryptionUtils: 加密解密工具类。
+
+com.example.project.constant: 存放常量类。
+
+	ErrorCode: 错误码常量类。
+	ConfigKey: 配置项常量类。
+com.example.project.aspect: 存放切面类。
+
+	LoggingAspect: 日志切面类。
+	AuthorizationAspect: 授权切面类。
+
+com.example.project.task: 存放定时任务相关的类。
+
+	OrderTask: 订单定时任务。
+
+com.example.project.listener: 存放事件监听器相关的类。
+
+	UserEventListener: 用户事件监听器。
+
+com.example.project.test: 存放单元测试相关的类。
+
+	UserControllerTest: 用户控制器的单元测试类。
+	OrderServiceTest: 订单服务的单元测试类。

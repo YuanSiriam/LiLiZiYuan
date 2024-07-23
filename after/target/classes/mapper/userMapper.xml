@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ziyuan.serve.user.repository.UserMapper">
+
+    <sql id="insertFields">username, password, mail, `group`, message</sql>
+
+
+    <select id="findUserByIUP" resultType="Customer">
+        select * from user
+        <where>
+            <if test="id!=null">
+                id = #{id}
+            </if>
+            <if test="phoneNumber!=0">
+                and mail = #{mail}
+            </if>
+            <if test="username!=null">
+                and username = #{username}
+            </if>
+        </where>
+
+    </select>
+
+    <insert id="insertUser" parameterType="Customer">
+        insert into user (<include refid="insertFields"/>)
+        values (#{username}, #{password}, #{mail}, #{group}, #{message})
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <select id="findUserByMail" resultType="Customer">
+        select * from user where mail = #{mail}
+    </select>
+
+</mapper>
