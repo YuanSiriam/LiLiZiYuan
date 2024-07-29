@@ -1,17 +1,14 @@
 package com.ziyuan.serve.user.service;
 
 
-//import com.ziyuan.serve.securityComponent.ServeUserExtend;
-//import com.ziyuan.serve.securityComponent.UserBCryptPasswordEncoder;
+
 import com.ziyuan.serve.securityComponent.PasswordEncoder;
+import com.ziyuan.serve.user.api.UserService;
 import com.ziyuan.serve.user.dto.CustomerUserDetails;
 import com.ziyuan.serve.user.entity.Customer;
 import com.ziyuan.serve.user.repository.UserMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.security.core.userdetails.UserDetails;
-//import org.springframework.security.core.userdetails.UserDetailsService;
-//import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,7 +24,7 @@ import java.util.Objects;
  */
 @Slf4j
 @Service
-public class UserServiceImpl implements UserDetailsService {
+public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Autowired
     private UserMapper userMapper;
@@ -63,6 +60,14 @@ public class UserServiceImpl implements UserDetailsService {
         return 0;
     }
 
+    /**
+     * 根据Id查找用户
+     */
+    @Override
+    public Customer findUserById(int id) {
+        return userMapper.findUserById(id);
+    }
+
 
     /**
      * 根据用户名查找用户，但其实是根据邮箱
@@ -70,7 +75,11 @@ public class UserServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
 
-        Customer customer = userMapper.findUserByMail(s);
+        Customer customer;
+        customer = userMapper.findUserByMail(s);
+        if (Objects.isNull(customer)){
+            customer = findUserById(Integer.parseInt(s));
+        }
 
         if (Objects.isNull(customer)){
             throw new UsernameNotFoundException("用户名不存在");

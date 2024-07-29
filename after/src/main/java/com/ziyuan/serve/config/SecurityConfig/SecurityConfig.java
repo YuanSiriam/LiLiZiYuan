@@ -24,6 +24,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 /**
@@ -63,7 +64,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String[] URL_WHITELIST = {
             "/user/login",
             "/logout",
-            "/captcha",
+            "/user/captcha",
+            "/ws/message",
             //aip文档接口的放行
             "/swagger-ui.html",
             "/swagger-ui/**",
@@ -97,7 +99,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 配置拦截规则
                 .and()
                 .authorizeRequests()
-                .antMatchers(URL_WHITELIST).permitAll()
+                .anyRequest().permitAll()
 //                .anyRequest().authenticated()
                 // 异常处理器
                 .and()
@@ -126,7 +128,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedHeaders(Collections.singletonList("*"));
+        corsConfiguration.setAllowedOrigins(Collections.singletonList("*"));
         corsConfiguration.setAllowedMethods(Collections.singletonList("*"));
         corsConfiguration.setAllowedOrigins(Collections.singletonList("*"));
         corsConfiguration.setMaxAge(3600L);

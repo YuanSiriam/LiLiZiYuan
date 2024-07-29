@@ -46,6 +46,14 @@ public class CustomerUserDetails implements UserDetails {
         return customer.getMail();
     }
 
+    public int getUserId() {
+        return customer.getId();
+    }
+
+    public Customer getCustomer(){
+        return customer;
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return this.accountNonExpired;

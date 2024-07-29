@@ -1,19 +1,19 @@
 package com.ziyuan.serve.util;
 
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ziyuan.serve.user.dto.CustomerUserDetails;
+import com.ziyuan.serve.user.entity.Customer;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
-import org.springframework.util.DigestUtils;
 
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -95,9 +95,14 @@ public class ServeUtil {
     }
 
     // 获取当前登录用户信息
-    public static void getUser(){
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        System.out.println(principal);
+    public static int getUserId(){
+        String principal = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        int userId = Integer.parseInt(principal);
+        if (userId > 0){
+            return userId;
+        }else {
+            throw new RuntimeException("获取用户信息失败");
+        }
     }
 
     // 生成随机字符串
@@ -118,7 +123,13 @@ public class ServeUtil {
      */
 
 
-    // json格式输出
+    /**
+     * 以json格式输出给前端
+     * @param code
+     * @param msg
+     * @param map
+     * @return
+     */
     public static String getJSONString(int code, String msg, Map<String, Object> map) {
 
         JSONObject jsonObject = new JSONObject();
@@ -140,6 +151,32 @@ public class ServeUtil {
 
     public static String getJSONString(int code) {
         return getJSONString(code, null, null);
+    }
+
+    public static String getArrayJSONString(int code, String msg, List<Map<String, Object>> mapList){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code", code);
+        jsonObject.put("msg", msg);
+
+        JSONArray jsonArray = new JSONArray();
+        if (mapList != null){
+            for(Map<String, Object> map:mapList){
+                if (map != null) {
+                    JSONObject mapJson = new JSONObject();
+                    for (String key : map.keySet()) {
+                        mapJson.put(key, map.get(key));
+                    }
+                    jsonArray.add(mapJson);
+                }else {
+                    throw new RuntimeException("map is null");
+                }
+            }
+        }else {
+            throw new RuntimeException("mapList is null");
+        }
+        jsonObject.put("array", jsonArray);
+
+        return jsonObject.toJSONString();
     }
 
 }

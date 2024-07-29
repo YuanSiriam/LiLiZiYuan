@@ -14,14 +14,14 @@ const props = defineProps({
 
 const isVisible = ref(false)
 
-const showMessage = () => {
+const showAlert = () => {
   isVisible.value = true
   setTimeout(() => {
     isVisible.value = false
   }, props.duration)
 }
 
-defineExpose({ showMessage })
+defineExpose({ showAlert })
 
 </script>
 

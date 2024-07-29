@@ -26,6 +26,18 @@ public interface ServeConstant {
      * 正确的code
      */
     public static final int SUCCESS_CODE = 0;
+    /**
+     * 系统消息类型
+     */
+    public static final String MESSAGE_SYSTEM = "systemMessage";
+
+    /**
+     * 用户消息类型
+     */
+    public static final String MESSAGE_USER = "userMessage";
+
+
+
 
 
 }

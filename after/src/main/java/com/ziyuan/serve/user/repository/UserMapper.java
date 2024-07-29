@@ -20,4 +20,6 @@ public interface UserMapper {
 
     Customer findUserByMail(String mail);
 
+    Customer findUserById(int userId);
+
 }

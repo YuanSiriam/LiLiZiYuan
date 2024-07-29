@@ -8,6 +8,5 @@ public interface UserService {
 
     int register(String username, String password, String mail);
 
-    int login(String mail, String password);
-
+    Customer findUserById(int id);
 }

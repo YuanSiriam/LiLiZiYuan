@@ -35,17 +35,21 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         response.setContentType("application/json;charset=utf-8");
 
-        String username = null;
+        int userId = -1;
         Object principal = authentication.getPrincipal();
         if (principal instanceof CustomerUserDetails){
             CustomerUserDetails customer = (CustomerUserDetails) principal;
 
-            username = customer.getUsername();
+            userId = customer.getUserId();
         }
 
-        // 生成Jwt并放在请求头中
-        String jwt = jwtUtil.generateToken(username);
-        response.setHeader(tokenHeader, jwt);
+        if (userId > 0){
+            // 生成Jwt并放在请求头中
+            String jwt = jwtUtil.generateToken(userId);
+            response.setHeader(tokenHeader, jwt);
+        }else{
+            throw new RuntimeException("用户不存在");
+        }
 
         ServeUtil.getJSONString(200, "SuccessLogin");
         PrintWriter out = response.getWriter();

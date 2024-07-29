@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ziyuan.serve.duplexCommunication.repository.ScorllingMapper">
+
+    <sql id="insertFields">
+        user_id, username, color, content, create_time
+    </sql>
+
+    <insert id="insertScorlling" parameterType="Scorlling">
+        insert into scorlling (<include refid="insertFields"/>)
+        values (#{userId},#{username}, #{color}, #{content}, #{createTime})
+    </insert>
+
+    <select id="selectAllScorlling" resultType="Scorlling">
+        select * from scorlling
+        order by create_time desc
+    </select>
+
+</mapper>

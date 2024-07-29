@@ -39,8 +39,6 @@ import java.util.concurrent.TimeUnit;
 @Api(value = "用户模块", tags = {"用户模块"})
 public class UserController {
 
-    private final int KAPTCHA_LENGTH = 5;
-
     @Autowired
     Producer producer;
 
@@ -52,9 +50,7 @@ public class UserController {
 
     @GetMapping("/find")
     @ApiOperation(value = "查询用户", tags = {"用户模块"})
-    public Customer findUser(int id,
-                             @RequestParam(defaultValue = "") String username,
-                             String mail){
+    public Customer findUser(int id, @RequestParam(defaultValue = "") String username, String mail){
 
         return userService.findUser(id, username, mail);
 
@@ -100,12 +96,5 @@ public class UserController {
         map.put("captchaImage", base64Img);
 
         return ServeUtil.getJSONString(ServeConstant.SUCCESS_CODE,null, map);
-    }
-
-
-    @ApiOperation(value = "测试", tags = {"用户模块"})
-    @GetMapping(value = "/get", produces = MediaType.TEXT_HTML_VALUE)
-    public String get(){
-        return "<!DOCTYPE html><html><body><h1>Hello, World!</h1></body></html>";
     }
 }

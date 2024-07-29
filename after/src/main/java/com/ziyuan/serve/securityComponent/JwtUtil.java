@@ -38,9 +38,9 @@ public class JwtUtil {
     /**
      * 生成Jwt
      */
-    public String generateToken(String mail) {
+    public String generateToken(int userId) {
         return Jwts.builder()
-                .setSubject(mail)
+                .setSubject(String.valueOf(userId))
                 .setExpiration(generateExpirationDate())
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
@@ -70,23 +70,6 @@ public class JwtUtil {
      */
     private Date generateExpirationDate(){
         return new Date(System.currentTimeMillis() + expiration * 1000);
-    }
-
-    /**
-     * 对比username和expired
-     * 验证token是否还有效
-     */
-    public boolean validateToken(String token){
-        Claims body = null;
-        try{
-            body = Jwts.parser()
-                    .setSigningKey(secret)
-                    .parseClaimsJws(token)
-                    .getBody();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return (body != null && !isTokenExpired(token));
     }
 
     /**
@@ -121,37 +104,6 @@ public class JwtUtil {
         return generateToken(claims);
     }*/
 
-    /**
-     * 刷新token
-     */
-    public String refreshHeadToken(String oldToken){
-        String token = oldToken.substring(tokenHead.length());
-
-        // 校验是否过期
-        if (isTokenExpired(token)){
-            return null;
-        }
-        if (tokenRefreshJustBefore(token)){
-            return token;
-        }else {
-            String mail = SecurityContextHolder.getContext().getAuthentication().getName();
-            return generateToken(mail);
-        }
-    }
-
-
-    /**
-     * 判断token是否刚刷新过
-     */
-    private boolean tokenRefreshJustBefore(String token) {
-        Claims claims = getClaimsFromToken(token);
-        Date created = claims.get(CLAIM_KEY_CREATED, Date.class);
-        Date refreshDate = new Date();
-        if (refreshDate.after(created) && refreshDate.before(DateUtil.offsetSecond(created, REFRESH_LEAST_TIME))){
-            return true;
-        }
-        return false;
-    }
 
     /**
      * 获取jwt中的authentication对象
